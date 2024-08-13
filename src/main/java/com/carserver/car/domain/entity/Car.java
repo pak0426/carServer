@@ -1,10 +1,7 @@
 package com.carserver.car.domain.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,10 +28,10 @@ public class Car {
     @Enumerated(EnumType.STRING)
     private RentalStatus rentalStatus;
 
-    @Min(value = 1880, message = "생산 연도는 1880 이상이어야 합니다.")
+    @Positive
     private int productionYear;
 
-    @NotEmpty(message = "적어도 하나의 카테고리가 필요합니다.")
+    @NotEmpty
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "car_category",
@@ -47,8 +44,8 @@ public class Car {
     private LocalDateTime updatedDate;
 
 
-    public Car(String brand, String model, List<Category> categories, int productionYear) {
-        this(brand, model, RentalStatus.AVAILABLE, categories, productionYear, LocalDateTime.now(), LocalDateTime.now());
+    public Car(String brand, String model, RentalStatus rentalStatus, List<Category> categories, int productionYear) {
+        this(brand, model, rentalStatus, categories, productionYear, LocalDateTime.now(), LocalDateTime.now());
     }
 
     @Builder
@@ -68,5 +65,18 @@ public class Car {
             category.getCars().add(this);
         }
 
+    }
+
+    public void update(Car car) {
+        this.brand = car.getBrand();
+        this.model = car.getModel();
+        this.rentalStatus = car.getRentalStatus();
+        this.categories = car.getCategories();
+        this.productionYear = car.getProductionYear();
+        this.updatedDate = LocalDateTime.now();
+    }
+
+    public boolean isAvailable() {
+        return this.getRentalStatus() == RentalStatus.AVAILABLE;
     }
 }

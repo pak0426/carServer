@@ -18,7 +18,7 @@ public class RepositoryConfig {
     }
 
     @Bean
-    public CategoryRepository categoryRepository(DataJpaCategoryRepository dataJpaCategoryRepository) {
-        return new JpaCategoryRepository(dataJpaCategoryRepository);
+    public CategoryRepository categoryRepository(DataJpaCategoryRepository dataJpaCategoryRepository, JPAQueryFactory queryFactory) {
+        return new JpaCategoryRepository(dataJpaCategoryRepository, queryFactory);
     }
 }

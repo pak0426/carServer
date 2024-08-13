@@ -1,6 +1,5 @@
 package com.carserver.exception;
 
-import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

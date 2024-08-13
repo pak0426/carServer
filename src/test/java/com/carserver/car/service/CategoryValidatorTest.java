@@ -37,7 +37,7 @@ class CategoryValidatorTest {
         List<Category> savedCategories = categoryRepository.saveAll(List.of(new Category("소형"), new Category("중형")));
         List<Long> categoryIds = savedCategories.stream()
                 .map(Category::getId)
-                .collect(Collectors.toList());
+                .toList();
 
         // when
         List<Category> categories = categoryValidator.validate(categoryIds);
